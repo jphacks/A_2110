@@ -2,7 +2,7 @@ import zIndex from "@material-ui/core/styles/zIndex";
 import { useStopwatch, useTimer } from "react-timer-hook";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
-import { DependencyList, useCallback, useEffect, useState } from "react";
+import { DependencyList, useCallback, useEffect, useRef, useState } from "react";
 import Button from '@mui/material/Button';
 import Header from "../../components/header";
 import Link from "next/link";
@@ -34,6 +34,8 @@ const Track: NextPage = () => {
     y: 0,
     z: 0,
   }
+  //setIntervalバッファ用
+  let calculator: any;
   //加速度平均算出
   function getAcclerationAverage(acc: DeviceMotionEventAcceleration){
     counter++;
@@ -68,6 +70,10 @@ const Track: NextPage = () => {
     }
   }
   // Android or other ios
+  const AvgTimer = (e: DeviceMotionEvent) => {
+    if(isRunning && calculator === (undefined))calculator = setInterval(getAcclerationAverage,1000, e.accelerationIncludingGravity);
+    else if(!isRunning) clearInterval(calculator);
+  }
   useEffect(() => {
     window.addEventListener("devicemotion", (e: DeviceMotionEvent) => {
       if (!e.accelerationIncludingGravity) {
@@ -77,7 +83,7 @@ const Track: NextPage = () => {
       setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
       setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
       setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-      setInterval(getAcclerationAverage,1000, e.accelerationIncludingGravity);
+      AvgTimer(e);
       if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
         pause;
       }
@@ -100,7 +106,7 @@ const Track: NextPage = () => {
               setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
               setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
               setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-              setInterval(getAcclerationAverage,1000);
+              AvgTimer(e);
               if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
                 pause;
               }
