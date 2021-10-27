@@ -4,8 +4,12 @@ import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { DependencyList, useCallback, useEffect, useState } from "react";
 import Button from '@mui/material/Button';
+import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 import Header from "../../components/header";
+import styles from '../../styles/Home.module.css';
 import Link from "next/link";
+import { style } from "@mui/system";
+import { TextField, TextFieldProps } from "@mui/material";
 //Windowevent取得用Hooks
 type Motion = {
   x: Number,
@@ -72,59 +76,43 @@ const Stopwatch = () => {
 const Track: NextPage = () => {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
-  const [speedX, setSpeedX] = useState<number>(0);
-  const [speedY, setSpeedY] = useState<number>(0);
-  const [speedZ, setSpeedZ] = useState<number>(0);
-  useEffect(() => {
-    // Android or other ios
-    window.addEventListener("devicemotion", (e: DeviceMotionEvent) => {
-      if (!e.accelerationIncludingGravity) {
-        alert('event.accelerationIncludingGravity is null');
-        return;
-      }
-      setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
-      setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
-      setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-    })
-  })
-  const deviceMotionRequest = () => {
-    //@ts-ignore
-    // only have ios 13 above
-    if(DeviceMotionEvent.requestPermission){
-      //@ts-ignore
-      DeviceMotionEvent.requestPermission()
-      //@ts-ignore
-        .then(permissionState => {
-          if(permissionState === 'granted'){
-            window.addEventListener("devicemotion", (e: DeviceMotionEvent) => {
-              if (!e.accelerationIncludingGravity) {
-                alert('event.accelerationIncludingGravity is null');
-                return;
-              }
-              setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
-              setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
-              setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-            })
-          }
-        })
-        .catch(console.error);
-      } else {
-        console.log('DeviceMotionEvent.request is not found');
-      }
-    }
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   return (
     <div>
         <Header/>
-        <Button variant="outlined" onClick={deviceMotionRequest}>ios13の場合は最初にここをタップ</Button>
-        <Stopwatch/>
-        <div>
-          <span>x: {speedX * 100} </span>
-          <span>y: {speedY * 100} </span>
-          <span>z: {speedZ * 100} </span>
+        <h2>運動を記録する🏃</h2>
+        <div className={styles.grid}>
+          運動開始日時: 
+          <MobileDateTimePicker
+            value={startDate}
+            onChange={(newDate: Date | null) => {
+              setStartDate(newDate);
+            }}
+            label="開始時間"
+            onError={console.log}
+            minDate={new Date('2018-01-01T00:00')}
+            inputFormat="yyyy/MM/dd hh:mm a"
+            mask="___/__/__ __:__ _M"
+            renderInput={(params: TextFieldProps) => <TextField {...params} />}
+          />
+          運動終了日時: 
+          <MobileDateTimePicker
+            value={endDate}
+            onChange={(newDate: Date | null) => {
+              setEndDate(newDate);
+            }}
+            label="終了時間"
+            onError={console.log}
+            minDate={new Date('2018-01-01T00:00')}
+            inputFormat="yyyy/MM/dd hh:mm a"
+            mask="___/__/__ __:__ _M"
+            renderInput={(params: TextFieldProps) => <TextField {...params} />}
+          />
         </div>
+        <Button variant="contained">記録する！</Button>
     </div>
   )
 }
 
 export default Track;
-
