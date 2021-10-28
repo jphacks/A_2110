@@ -10,68 +10,6 @@ import styles from '../../styles/Home.module.css';
 import Link from "next/link";
 import { style } from "@mui/system";
 import { TextField, TextFieldProps } from "@mui/material";
-//Windowevent取得用Hooks
-type Motion = {
-  x: Number,
-  y: Number,
-  z: Number,
-}
-
-const useWindowEvent = <K extends keyof WindowEventMap>(
-  type: K,
-  listener: (this: Window, ev: WindowEventMap[K]) => any,
-  deps: DependencyList,
-  options?: boolean | AddEventListenerOptions
-) => useEffect(() => {
-    if(window){
-      window.addEventListener(type, listener, options);
-      return () => {
-        window.removeEventListener(type,listener, options);
-      }
-    }
-  }, deps);
-
-let Motionbuffer : Motion = {
-  x: 0,
-  y: 0,
-  z: 0,
-}
-
-function NumberTypeAdapter(x: null | undefined | number) : number{
-  return x = x !== (null) ? (x !== (undefined) ? x : 0) : 0
-}
-//加速度取得ハンドラ
-const UpdaterElement = () => {
-  return(
-  <section>
-    <p>x: {Motionbuffer.x}</p>
-    <p>y: {Motionbuffer.y}</p>
-    <p>z: {Motionbuffer.z}</p>
-  </section>
-  );
-}
-//運動時間計測
-const Stopwatch = () => {
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
-
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "50px" }}>
-        <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
-      </div>
-      <p>{isRunning ? "Running" : "Not running"}</p>
-      <Button onClick={start}>Start</Button>
-      <Button onClick={pause}>Pause</Button>
-    </div>
-  );
-}
-
-//現在位置取得
-
-//運動距離計測(Google Maps Direction API)
-
-
 //ページ実装
 const Track: NextPage = () => {
   const { data: session, status } = useSession();

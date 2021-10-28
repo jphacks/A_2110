@@ -21,7 +21,7 @@ const Login : NextPage=({ providers}:any) =>{
       {Object.values(providers).map((provider: any) => (
         <div key={provider.name}>
           <Button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
+            {provider.name}でログイン/新規登録
           </Button>
         </div>
       ))}
