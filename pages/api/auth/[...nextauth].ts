@@ -17,4 +17,12 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  pages: {
+    signIn: '/app/login'
+  },
+  callbacks: {
+    redirect({ url, baseUrl }) {
+      return '/app'
+    }
+  }
 })
