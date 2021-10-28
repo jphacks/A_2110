@@ -1,17 +1,21 @@
 import type { NextPage } from "next";
 import { getCsrfToken, useSession, signOut } from "next-auth/react";
 import {signIn} from 'next-auth/react'
-import { useRouter } from "next/dist/client/router";
+import router, { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 import { getProviders } from "next-auth/react";
 import { Button } from "@mui/material";
 import Header from "../../components/header";
+import { Router } from "@mui/icons-material";
 
 
 const Login : NextPage=({ providers}:any) =>{
   const { data: session, status } = useSession();
   const loading = status === 'loading';
-  return (
+  useEffect(() => {
+    session ? router.replace('/app') : "";
+  }, []);
+  return(
     <>
       <Header />
       {Object.values(providers).map((provider: any) => (

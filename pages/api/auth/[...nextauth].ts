@@ -22,7 +22,7 @@ export default NextAuth({
   },
   callbacks: {
     redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl
+      return '/app'
     }
   }
 })
