@@ -84,7 +84,7 @@ const Track: NextPage = () => {
       setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
       setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
       AvgTimer(e);
-      if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
+      if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 5 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 5 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 5)){
         pause;
       }
     })
