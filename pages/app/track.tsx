@@ -63,7 +63,7 @@ const Track: NextPage = () => {
         acclerationAverage.y = (((acclerationAverage.y*(counter)) - (NumberTypeAdapter(subjectdata.y)))/counter);
         acclerationAverage.z = (((acclerationAverage.z*(counter))- (NumberTypeAdapter(subjectdata.z)))/counter);
         //新しいデータを挿入
-        acclerationAverage.x = (((acclerationAverage.x *(counter-1)) + (acclerationBuffer.x))/counter);
+        acclerationAverage.x = (((acclerationAverage.x *(counter-1))+ (acclerationBuffer.x))/counter);
         acclerationAverage.y = (((acclerationAverage.y *(counter-1))+ (acclerationBuffer.y))/counter);
         acclerationAverage.z = (((acclerationAverage.z *(counter-1))+ (acclerationBuffer.z))/counter);
       }
@@ -122,7 +122,7 @@ const Track: NextPage = () => {
     <>
     <Header/>
     <div style={{textAlign: "center"}}>
-        <Button variant="outlined" onClick={deviceMotionRequest}>ios13の場合は最初にここをタップ</Button>
+        <Button variant="outlined" onClick={deviceMotionRequest}>ios13以降の場合は最初にここをタップ</Button>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: "50px" }}>
             <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>

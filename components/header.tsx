@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "./header.module.css"
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
+import MenuIcon from '@mui/icons-material/Menu';
 
 // The approach used in this component shows how to built a sign in and sign out
 // component that works on pages which support both client and server side
@@ -22,7 +24,7 @@ export default function Header() {
           {!session && (
             <>
               <span className={styles.notSignedInText}>
-                You are not signed in
+                ログインしていません
               </span>
               <a
                 href={`/api/auth/signin`}
@@ -32,7 +34,7 @@ export default function Header() {
                   signIn()
                 }}
               >
-                Sign in
+                ログイン
               </a>
             </>
           )}
@@ -43,9 +45,9 @@ export default function Header() {
                 className={styles.avatar}
               />
               <span className={styles.signedInText}>
-                <small>Signed in as</small>
+                <strong>{session.user.name}</strong>
                 <br />
-                <strong>{session.user.email || session.user.name}</strong>
+                <small>ログイン中</small>
               </span>
               <a
                 href={`/api/auth/signout`}
@@ -55,41 +57,40 @@ export default function Header() {
                   signOut()
                 }}
               >
-                Sign out
+                ログアウト
               </a>
             </>
           )}
         </p>
       </div>
-      <nav>
-        <ul className={styles.navItems}>
-          <li className={styles.navItem}>
-            <Link href="/">
-              <a>Home</a>
+      <Box sx={{ flexGrow: 1}}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Re-move
+          </Typography>
+          <Button color="inherit">
+            <Link href="/app/track">
+              track
             </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/client">
-              <a>Client</a>
-            </Link>
-          </li>
-          <li className={styles.navItem}>
+          </Button>
+          <Button color="inherit">
             <Link href="/ranking">
-              <a>Server</a>
+              Server
             </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/profile">
-              <a>Protected</a>
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/api-example">
-              <a>API</a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+          </Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </header>
   )
 }
