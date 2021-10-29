@@ -10,6 +10,7 @@ const AppHome = () : JSX.Element => {
     <div>
       <Header />
       nanika
+      <iframe src="/api/utils/jwt"/>
     </div>
   )
 }
