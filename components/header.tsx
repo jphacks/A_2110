@@ -46,6 +46,7 @@ export default function Header() {
               />
               <span className={styles.signedInText}>
                 <strong>{session.user.name}</strong>
+                {session.user.id}
                 <br />
                 <small>ログイン中</small>
               </span>
@@ -80,12 +81,17 @@ export default function Header() {
           </Typography>
           <Button color="inherit">
             <Link href="/app/track">
-              track
+              走る
             </Link>
           </Button>
           <Button color="inherit">
-            <Link href="/ranking">
-              Server
+            <Link href="/app/record">
+              記録する
+            </Link>
+          </Button>
+          <Button color="inherit">
+            <Link href="/app/trackhistory">
+              履歴
             </Link>
           </Button>
           </Toolbar>

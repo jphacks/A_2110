@@ -6,6 +6,8 @@ import { DependencyList, useCallback, useEffect, useRef, useState } from "react"
 import Button from '@mui/material/Button';
 import Header from "../../components/header";
 import Link from "next/link";
+import axios from "axios";
+import router from "next/dist/client/router";
 type Motion = {
   x: number,
   y: number,
@@ -27,7 +29,35 @@ const Track: NextPage = () => {
   const [speedX, setSpeedX] = useState<number>(0);
   const [speedY, setSpeedY] = useState<number>(0);
   const [speedZ, setSpeedZ] = useState<number>(0);
+  let today = new Date();
+  const Click= () =>{
+    console.log(session?.user.id)
+    let activity_length = (hours*60) + (minutes*60) + (seconds*60);
+    if(activity_length === 0) return;
+    axios.post('https://7277-124-155-51-210.ngrok.io/history/' + 100 , {
+      user_id: 100,
+      data_type: "track",
+      track_date: today,
+      track_length: activity_length
+    }).then(response => console.log(response.status))
+    .catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+    });
+  } 
+
   let counter = 0;
+  const calcurate_avarage_accel_time = 180;
   let acclerationAverageArray: Motion[] = [];
   let acclerationAverage: Motion = {
     x: 0,
@@ -47,13 +77,13 @@ const Track: NextPage = () => {
     acclerationBuffer.x = NumberTypeAdapter(acc.x);
     acclerationBuffer.y = NumberTypeAdapter(acc.y);
     acclerationBuffer.z = NumberTypeAdapter(acc.z);
-    if(counter !== 180){
+    if(counter !== calcurate_avarage_accel_time){
       acclerationAverageArray.push(acclerationBuffer);
       counter++;
       acclerationAverage.x = (((acclerationAverage.x *(counter-1)) + (acclerationBuffer.x))/counter);
       acclerationAverage.y = (((acclerationAverage.y *(counter-1))+ (acclerationBuffer.y))/counter);
       acclerationAverage.z = (((acclerationAverage.z *(counter-1))+ (acclerationBuffer.z))/counter);
-    }else if(counter >= 180){
+    }else if(counter >= calcurate_avarage_accel_time){
       acclerationAverageArray.push(acclerationBuffer);
       let subjectdata: Motion | undefined = acclerationAverageArray.shift();
       
@@ -84,12 +114,12 @@ const Track: NextPage = () => {
       setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
       setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
       AvgTimer(e);
-      if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
+      if(counter >= calcurate_avarage_accel_time && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 5 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 5 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 5)){
         pause;
       }
     })
   })
-  // only have ios 13 above
+  // DeviceMotionEvent.requestPermission() have ios 13 above only 
   const deviceMotionRequest = () => {
     //@ts-ignore
     if(DeviceMotionEvent.requestPermission){
@@ -107,7 +137,7 @@ const Track: NextPage = () => {
               setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
               setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
               AvgTimer(e);
-              if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
+              if(counter >= calcurate_avarage_accel_time && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
                 pause;
               }
             })
@@ -118,6 +148,11 @@ const Track: NextPage = () => {
         console.log('DeviceMotionEvent.request is not found');
       }
     }
+  useEffect(() => {
+    session ?  "" : router.replace('/app/login');
+  }, []);
+  // スコア計算:
+  // 基礎:((100 * Streak) + ((分 + 1) * 10) + (((累計h(分以下切り捨て))*2)^ (1.125 ~ 2)) ))
   return (
     <>
     <Header/>
@@ -127,12 +162,13 @@ const Track: NextPage = () => {
           <div style={{ fontSize: "50px" }}>
             <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
           </div>
-            <p>{isRunning ? "Running" : "Not running"}</p>
+            <p>{isRunning ? "Running" : " "}</p>
             <Button onClick={start}>Start</Button>
             <Button onClick={pause}>Pause</Button>
           </div>
-        <Button variant="contained">完了する！</Button>
+        <Button variant="contained" onClick={Click}>完了する！</Button>
         <div>
+          <small>debug: </small>
           <span>x: {speedX * 100} </span>
           <span>y: {speedY * 100} </span>
           <span>z: {speedZ * 100} </span>

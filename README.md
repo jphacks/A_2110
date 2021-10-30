@@ -19,12 +19,17 @@
 ## 開発技術
 ### 活用した技術
 #### API・データ
-* 
-* 
+* FastAPI
+* MySQL
+
 
 #### フレームワーク・ライブラリ・モジュール
-* 
-* 
+* Next.js
+* NextAuth.js
+* Material-UI
+* Docker(Docker-compose)
+* pymysql(aiomysql)
+* SQLAlchemy
 
 #### デバイス
 * 

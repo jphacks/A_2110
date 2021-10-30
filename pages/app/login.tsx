@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { getProviders } from "next-auth/react";
 import { Button } from "@mui/material";
 import Header from "../../components/header";
-import { Router } from "@mui/icons-material";
 
 
 const Login : NextPage=({ providers}:any) =>{
@@ -21,7 +20,7 @@ const Login : NextPage=({ providers}:any) =>{
       {Object.values(providers).map((provider: any) => (
         <div key={provider.name}>
           <Button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
+            {provider.name}でログイン/新規登録
           </Button>
         </div>
       ))}

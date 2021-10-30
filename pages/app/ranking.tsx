@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 const Ranking: NextPage = () => {
     return (
         <div>
-            <p>aaa</p>
+            <p>In constructing</p>
         </div>
     )
 }
