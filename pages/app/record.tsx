@@ -1,5 +1,3 @@
-import zIndex from "@material-ui/core/styles/zIndex";
-import { useStopwatch, useTimer } from "react-timer-hook";
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { DependencyList, useCallback, useEffect, useState } from "react";
@@ -7,15 +5,23 @@ import Button from '@mui/material/Button';
 import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 import Header from "../../components/header";
 import styles from '../../styles/Home.module.css';
-import Link from "next/link";
-import { style } from "@mui/system";
 import { TextField, TextFieldProps } from "@mui/material";
+import axios from "axios";
 //ページ実装
 const Track: NextPage = () => {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const Click= () =>{
+    console.log(session?.user.id)
+    axios.post('http://localhost:8000/history/' + 100 , {
+      user_id: 100,
+      data_type: "record",
+      start_date: startDate,
+      end_date: endDate,  
+    }).then(response => console.log(response.status));
+  } 
   return (
     <div>
         <Header/>
@@ -48,7 +54,9 @@ const Track: NextPage = () => {
             renderInput={(params: TextFieldProps) => <TextField {...params} />}
           />
         </div>
-        <Button variant="contained">記録する！</Button>
+        <Button variant="contained" onClick={Click}>
+          記録する！
+        </Button>
     </div>
   )
 }

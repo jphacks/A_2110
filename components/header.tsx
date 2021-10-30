@@ -46,6 +46,7 @@ export default function Header() {
               />
               <span className={styles.signedInText}>
                 <strong>{session.user.name}</strong>
+                {session.user.id}
                 <br />
                 <small>ログイン中</small>
               </span>
