@@ -39,7 +39,21 @@ const Track: NextPage = () => {
       data_type: "track",
       track_date: today,
       track_length: activity_length
-    }).then(response => console.log(response.status));
+    }).then(response => console.log(response.status))
+    .catch(function (error) {
+      if (error.response) {
+        // Request made and server responded
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+    });
   } 
 
   let counter = 0;
