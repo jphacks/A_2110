@@ -34,7 +34,7 @@ const Track: NextPage = () => {
     console.log(session?.user.id)
     let activity_length = (hours*60) + (minutes*60) + (seconds*60);
     if(activity_length === 0) return;
-    axios.post('http://localhost:8000/history/' + 100 , {
+    axios.post('https://7277-124-155-51-210.ngrok.io/history/' + 100 , {
       user_id: 100,
       data_type: "track",
       track_date: today,
@@ -137,6 +137,8 @@ const Track: NextPage = () => {
   useEffect(() => {
     session ?  "" : router.replace('/app/login');
   }, []);
+  // スコア計算:
+  // 基礎:((100 * Streak) + ((分 + 1) * 10) + (((累計h(分以下切り捨て))*2)^ (1.125 ~ 2)) ))
   return (
     <>
     <Header/>

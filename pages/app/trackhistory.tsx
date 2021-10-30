@@ -27,16 +27,10 @@ const TrackHistory :NextPage =  () => {
   useEffect(() => {
     session ?  "" : router.replace('/app/login');
   }, []);
-  axios.get('http://localhost:8000/history/'+ 100 +'/track').then(res => setData(res.data))
   return(
     <>
       <Header />
         <div>
-          {data?.map((d: any) => {
-            <p>
-              - {d.track_date} | {d.track_length}
-            </p>
-          })}
         </div>
     </>
   )
