@@ -103,10 +103,10 @@ const Track: NextPage = () => {
     }
   }
   // Android or other ios
-  const AvgTimer = (e: DeviceMotionEvent) => {
-    if(isRunning && calculator === (undefined))calculator = setInterval(getAcclerationAverage,1000, e.accelerationIncludingGravity);
-    else if(!isRunning) clearInterval(calculator);
-  }
+  //const AvgTimer = (e: DeviceMotionEvent) => {
+    //if(isRunning && calculator === (undefined))calculator = setInterval(getAcclerationAverage,1000, e.accelerationIncludingGravity);
+    //else if(!isRunning) clearInterval(calculator);
+  //}
   useEffect(() => {
     window.addEventListener("devicemotion", (e: DeviceMotionEvent) => {
       if (!e.accelerationIncludingGravity) {
@@ -116,7 +116,7 @@ const Track: NextPage = () => {
       setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
       setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
       setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-      AvgTimer(e);
+    //  AvgTimer(e);
       if(counter >= calcurate_avarage_accel_time && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 5 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 5 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 5)){
         pause;
       }
@@ -139,7 +139,7 @@ const Track: NextPage = () => {
               setSpeedX(NumberTypeAdapter(e.accelerationIncludingGravity.x));
               setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
               setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
-              AvgTimer(e);
+              // AvgTimer(e);
               if(counter >= calcurate_avarage_accel_time && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
                 pause;
               }

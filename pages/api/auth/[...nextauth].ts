@@ -46,7 +46,7 @@ export default NextAuth({
     // decode: async ({ secret, token, maxAge }) => {},
   },
   pages: {
-    signIn: '/app/login'
+   //signIn: '/app/login'
   },
   callbacks: {
     redirect({ url, baseUrl }) {
