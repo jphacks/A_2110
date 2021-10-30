@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Header from "../../components/header";
 import Link from "next/link";
 import axios from "axios";
+import router from "next/dist/client/router";
 type Motion = {
   x: number,
   y: number,
@@ -104,7 +105,7 @@ const Track: NextPage = () => {
       }
     })
   })
-  // only have ios 13 above
+  // DeviceMotionEvent.requestPermission() have ios 13 above only 
   const deviceMotionRequest = () => {
     //@ts-ignore
     if(DeviceMotionEvent.requestPermission){
@@ -122,7 +123,7 @@ const Track: NextPage = () => {
               setSpeedY(NumberTypeAdapter(e.accelerationIncludingGravity.y));
               setSpeedZ(NumberTypeAdapter(e.accelerationIncludingGravity.z));
               AvgTimer(e);
-              if(counter >= 180 && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
+              if(counter >= calcurate_avarage_accel_time && (Math.abs(acclerationAverage.x - NumberTypeAdapter(e.accelerationIncludingGravity.x)) < 2 || Math.abs(acclerationAverage.y - NumberTypeAdapter(e.accelerationIncludingGravity.y)) < 2 || Math.abs(acclerationAverage.z - NumberTypeAdapter(e.accelerationIncludingGravity.z)) < 2)){
                 pause;
               }
             })
@@ -133,6 +134,9 @@ const Track: NextPage = () => {
         console.log('DeviceMotionEvent.request is not found');
       }
     }
+  useEffect(() => {
+    session ?  "" : router.replace('/app/login');
+  }, []);
   return (
     <>
     <Header/>
