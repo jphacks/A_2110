@@ -30,7 +30,8 @@ const Track: NextPage = () => {
   const [speedY, setSpeedY] = useState<number>(0);
   const [speedZ, setSpeedZ] = useState<number>(0);
   let today = new Date();
-  const Click= () =>{
+   const Click= () =>{
+/*
     console.log(session?.user.id)
     let activity_length = (hours*60) + (minutes*60) + (seconds*60);
     if(activity_length === 0) return;
@@ -54,7 +55,9 @@ const Track: NextPage = () => {
         console.log('Error', error.message);
       }
     });
+    */
   } 
+
 
   let counter = 0;
   const calcurate_avarage_accel_time = 180;
@@ -149,7 +152,6 @@ const Track: NextPage = () => {
       }
     }
   useEffect(() => {
-    session ?  "" : router.replace('/app/login');
   }, []);
   // スコア計算:
   // 基礎:((100 * Streak) + ((分 + 1) * 10) + (((累計h(分以下切り捨て))*2)^ (1.125 ~ 2)) ))

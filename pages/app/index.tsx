@@ -8,7 +8,6 @@ const AppHome = () : JSX.Element => {
   const loading = status === 'loading'
   const [ content , setContent ] = useState()
   useEffect(() => {
-    session ?  "" : router.replace('/app/login');
   }, []);
   return(
     <div>

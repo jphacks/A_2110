@@ -12,7 +12,6 @@ const Login : NextPage=({ providers}:any) =>{
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   useEffect(() => {
-    session ? router.replace('/app') : "";
   }, []);
   return(
     <>
