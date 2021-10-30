@@ -49,8 +49,5 @@ export default NextAuth({
    //signIn: '/app/login'
   },
   callbacks: {
-    redirect({ url, baseUrl }) {
-      return '/app'
-    },
   },
 })
