@@ -34,7 +34,7 @@ const Track: NextPage = () => {
     console.log(session?.user.id)
     let activity_length = (hours*60) + (minutes*60) + (seconds*60);
     if(activity_length === 0) return;
-    axios.post('https://7277-124-155-51-210.ngrok.io/history/' + 100 , {
+    axios.post('https://localhost:8000/history/' + 100 , {
       user_id: 100,
       data_type: "track",
       track_date: today,

@@ -16,7 +16,7 @@ const Track: NextPage = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const Click= () =>{
     console.log(session?.user.id)
-    axios.post('https://7277-124-155-51-210.ngrok.io/history/' + 100 , {
+    axios.post('https://localhost:8000/history/' + 100 , {
       user_id: 100,
       data_type: "record",
       start_date: startDate,
